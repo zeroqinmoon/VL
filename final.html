@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vauleza | Finalizar Pedido</title>
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="images/favicon.png">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    /* Estilos do Carrinho */
+    .checkout-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 30px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    
+    .checkout-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 1px solid #eee;
+      border-radius: 6px;
+    }
+    
+    .checkout-section h2 {
+      color: #ff9800;
+      margin-bottom: 20px;
+      font-size: 24px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
+    
+    .item-name {
+      flex: 1;
+      font-weight: 500;
+    }
+    
+    .item-price {
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .complements {
+      margin-top: 15px;
+    }
+    
+    .complement-option {
+      margin-bottom: 10px;
+    }
+    
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      resize: vertical;
+      min-height: 80px;
+      margin-top: 10px;
+    }
+    
+    .delivery-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .delivery-option {
+      display: flex;
+      align-items: center;
+    }
+    
+    .delivery-option input {
+      margin-right: 10px;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    .form-group input, 
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    .payment-methods {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .payment-method {
+      flex: 1;
+      min-width: 120px;
+    }
+    
+    .payment-method input {
+      margin-right: 5px;
+    }
+    
+    .btn {
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    
+    .btn:hover {
+      background-color: #e68a00;
+    }
+    
+    .btn-secondary {
+      background-color: #6c757d;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .total {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: right;
+      margin-top: 20px;
+      color: #ff9800;
+    }
+    
+    .border-price {
+      color: #666;
+      font-size: 0.9em;
+      margin-left: 5px;
+    }
+    
+    .confirmation-message {
+      text-align: center;
+      padding: 30px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      border: 1px solid #eee;
+    }
+    
+    .confirmation-message i {
+      font-size: 50px;
+      color: #28a745;
+      margin-bottom: 20px;
+    }
+    
+    .order-details {
+      background: white;
+      padding: 20px;
+      border-radius: 6px;
+      border: 1px solid #eee;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body class="sub_page">
+  <!-- Hero Area -->
+  <div class="hero_area">
+    <div class="bg-box">
+      <img src="images/hero-bg.jpg" alt="Background do restaurante">
+    </div>
+    
+    <!-- header section -->
+    <header class="header_section">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+          <a class="navbar-brand" href="index.html">
+            <span>
+              Vauleza
+            </span>
+          </a>
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class=""> </span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav  mx-auto ">
+              <li class="nav-item">
+                <a class="nav-link" href="index.html">Inicio </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="menu.html">Cardapio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.html">Sobre</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="book.html">Localizacao</a>
+              </li>
+            </ul>
+            <div class="user_option">
+              <a href="" class="user_link">
+                <i class="fa fa-user" aria-hidden="true"></i>
+              </a>
+              <a class="cart_link" href="#">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
+                  <g>
+                    <g>
+                      <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
+                   c29.184,0,53.248-23.552,53.248-53.248C398.336,362.926,374.784,338.862,345.6,338.862z" />
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M439.296,84.91c-1.024,0-2.56-0.512-4.096-0.512H112.64l-5.12-34.304C104.448,27.566,84.992,10.67,61.952,10.67H20.48
+                   C9.216,10.67,0,19.886,0,31.15c0,11.264,9.216,20.48,20.48,20.48h41.472c2.56,0,4.608,2.048,5.12,4.608l31.744,216.064
+                   c4.096,27.136,27.648,47.616,55.296,47.616h212.992c26.624,0,49.664-18.944,55.296-45.056l33.28-166.4
+                   C457.728,97.71,450.56,86.958,439.296,84.91z" />
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
+                   c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
+                    </g>
+                  </g>
+                </svg>
+              </a>
+              <form class="form-inline">
+                <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+              </form>
+              <a href="" class="order_online">
+                Contato
+              </a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+  </div>
+
+  <!-- Checkout Section -->
+  <section class="food_section layout_padding-bottom">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>Finalizar Pedido</h2>
+      </div>
+      
+      <div class="checkout-container">
+        <!-- Seção 1: Resumo do Carrinho -->
+        <div class="checkout-section" id="cart-summary">
+          <h2>Seu Pedido</h2>
+          <div id="cart-items-container">
+            <!-- Itens do carrinho serão inseridos aqui via JavaScript -->
+          </div>
+          <div class="total" id="cart-total">Total: R$ 0.00</div>
+        </div>
+        
+        <!-- Seção 2: Complementos e Observações -->
+        <div class="checkout-section" id="complements-section">
+          <h2>Complementos e Observações</h2>
+          <p>Deseja adicionar complementos ou observações ao seu pedido?</p>
+          
+          <div id="pizza-complements" class="complements hidden">
+            <h3>Escolha a borda para suas pizzas:</h3>
+            <div class="complement-option">
+              <input type="radio" name="pizza-border" id="border-none" value="Sem borda" data-price="0" checked>
+              <label for="border-none">Sem borda (inclusa)</label>
+            </div>
+            <div class="complement-option">
+              <input type="radio" name="pizza-border" id="border-catupiry" value="Borda de Catupiry" data-price="8">
+              <label for="border-catupiry">Borda de Catupiry <span class="border-price">(+R$ 8,00 por pizza)</span></label>
+            </div>
+            <div class="complement-option">
+              <input type="radio" name="pizza-border" id="border-cheddar" value="Borda de Cheddar" data-price="7">
+              <label for="border-cheddar">Borda de Cheddar <span class="border-price">(+R$ 7,00 por pizza)</span></label>
+            </div>
+            <div class="complement-option">
+              <input type="radio" name="pizza-border" id="border-calabresa" value="Borda de Calabresa" data-price="9">
+              <label for="border-calabresa">Borda de Calabresa <span class="border-price">(+R$ 9,00 por pizza)</span></label>
+            </div>
+            <div class="complement-option">
+              <input type="radio" name="pizza-border" id="border-bacon" value="Borda de Bacon" data-price="10">
+              <label for="border-bacon">Borda de Bacon <span class="border-price">(+R$ 10,00 por pizza)</span></label>
+            </div>
+            <div class="complement-option">
+              <input type="radio" name="pizza-border" id="border-doce" value="Borda Doce" data-price="12">
+              <label for="border-doce">Borda Doce <span class="border-price">(+R$ 12,00 por pizza)</span></label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="observations">Observações:</label>
+            <textarea id="observations" placeholder="Alguma observação importante sobre seu pedido?"></textarea>
+          </div>
+          
+          <div class="text-right">
+            <button class="btn" id="btn-next-delivery">Continuar</button>
+          </div>
+        </div>
+        
+        <!-- Seção 3: Método de Entrega -->
+        <div class="checkout-section hidden" id="delivery-section">
+          <h2>Método de Entrega</h2>
+          
+          <div class="delivery-options">
+            <div class="delivery-option">
+              <input type="radio" name="delivery-method" id="delivery-home" value="Em domicílio" checked>
+              <label for="delivery-home">Entrega em domicílio</label>
+            </div>
+            <div class="delivery-option">
+              <input type="radio" name="delivery-method" id="delivery-table" value="Em mesa">
+              <label for="delivery-table">Entrega em mesa (no restaurante)</label>
+            </div>
+            <div class="delivery-option">
+              <input type="radio" name="delivery-method" id="delivery-pickup" value="Retirada no local">
+              <label for="delivery-pickup">Retirada no local</label>
+            </div>
+          </div>
+          
+          <div id="delivery-fields">
+            <div class="form-group">
+              <label for="customer-name">Nome completo:</label>
+              <input type="text" id="customer-name" required>
+            </div>
+            <div class="form-group">
+              <label for="customer-phone">Telefone:</label>
+              <input type="tel" id="customer-phone" required>
+            </div>
+            <div id="address-fields">
+              <div class="form-group">
+                <label for="customer-address">Endereço:</label>
+                <input type="text" id="customer-address" required>
+              </div>
+              <div class="form-group">
+                <label for="customer-number">Número:</label>
+                <input type="text" id="customer-number" required>
+              </div>
+              <div class="form-group">
+                <label for="customer-complement">Complemento:</label>
+                <input type="text" id="customer-complement">
+              </div>
+              <div class="form-group">
+                <label for="customer-neighborhood">Bairro:</label>
+                <input type="text" id="customer-neighborhood" required>
+              </div>
+              <div class="form-group">
+                <label for="customer-reference">Ponto de referência:</label>
+                <input type="text" id="customer-reference" placeholder="Ex: Próximo ao mercado X">
+              </div>
+            </div>
+            <div id="table-number-field" class="hidden">
+              <div class="form-group">
+                <label for="table-number">Número da mesa:</label>
+                <input type="text" id="table-number" required>
+              </div>
+            </div>
+          </div>
+          
+          <div class="text-right">
+            <button class="btn btn-secondary" id="btn-back-complements">Voltar</button>
+            <button class="btn" id="btn-next-payment">Continuar</button>
+          </div>
+        </div>
+        
+        <!-- Seção 4: Pagamento -->
+        <div class="checkout-section hidden" id="payment-section">
+          <h2>Pagamento</h2>
+          
+          <div class="payment-methods">
+            <div class="payment-method">
+              <input type="radio" name="payment-method" id="payment-pix" value="PIX" checked>
+              <label for="payment-pix">PIX</label>
+            </div>
+            <div class="payment-method">
+              <input type="radio" name="payment-method" id="payment-credit" value="Cartão de Crédito">
+              <label for="payment-credit">Cartão de Crédito</label>
+            </div>
+            <div class="payment-method">
+              <input type="radio" name="payment-method" id="payment-debit" value="Cartão de Débito">
+              <label for="payment-debit">Cartão de Débito</label>
+            </div>
+            <div class="payment-method">
+              <input type="radio" name="payment-method" id="payment-cash" value="Dinheiro">
+              <label for="payment-cash">Dinheiro</label>
+            </div>
+          </div>
+          
+          <div id="pix-info" class="hidden">
+            <p>Pagamento via PIX será processado pelo PagBank.</p>
+            <p>Você receberá um QR Code para pagamento após confirmar o pedido.</p>
+          </div>
+          
+          <div id="card-info" class="hidden">
+            <p>Pagamento via cartão será processado pelo PagBank.</p>
+            <p>Você será redirecionado para a página de pagamento seguro após confirmar o pedido.</p>
+          </div>
+          
+          <div id="cash-info" class="hidden">
+            <div class="form-group">
+              <label for="need-change">Precisa de troco?</label>
+              <select id="need-change">
+                <option value="no">Não, não preciso de troco</option>
+                <option value="yes">Sim, preciso de troco para:</option>
+              </select>
+            </div>
+            <div class="form-group hidden" id="change-value-container">
+              <label for="change-value">Valor para troco:</label>
+              <input type="number" id="change-value" min="0" step="0.01">
+            </div>
+          </div>
+          
+          <div class="text-right">
+            <button class="btn btn-secondary" id="btn-back-delivery">Voltar</button>
+            <button class="btn" id="btn-confirm-order">Confirmar Pedido</button>
+          </div>
+        </div>
+        
+        <!-- Seção 5: Confirmação -->
+        <div class="checkout-section hidden" id="confirmation-section">
+          <div class="confirmation-message">
+            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            <h3>Pedido Confirmado!</h3>
+            <p>Seu pedido foi recebido e está sendo preparado.</p>
+          </div>
+          
+          <div class="order-details" id="order-details">
+            <!-- Detalhes do pedido serão inseridos aqui -->
+          </div>
+          
+          <div class="text-center">
+            <a href="menu.html" class="btn">Voltar ao Cardápio</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer_section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 footer-col">
+          <div class="footer_contact">
+            <h4>Contato</h4>
+            <div class="contact_link_box">
+              <a href="#"><i class="fa fa-map-marker"></i> <span>Endereço do Restaurante</span></a>
+              <a href="#"><i class="fa fa-phone"></i> <span>+55 11 98765-4321</span></a>
+              <a href="#"><i class="fa fa-envelope"></i> <span>contato@vauleza.com</span></a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 footer-col">
+          <div class="footer_detail">
+            <a href="index.html" class="footer-logo">Vauleza</a>
+            <p>O melhor da culinária em um só lugar. Qualidade e sabor inigualáveis.</p>
+            <div class="footer_social">
+              <a href="#"><i class="fa fa-facebook"></i></a>
+              <a href="#"><i class="fa fa-instagram"></i></a>
+              <a href="#"><i class="fa fa-whatsapp"></i></a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 footer-col">
+          <h4>Horário de Funcionamento</h4>
+          <p>Segunda a Sábado</p>
+          <p>11:00 - 22:00</p>
+          <p>Domingo</p>
+          <p>11:00 - 20:00</p>
+        </div>
+      </div>
+      
+      <div class="footer-info">
+        <p>&copy; <span id="displayYear"></span> Vauleza - Todos os direitos reservados</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script>
+    // Recuperar carrinho do localStorage
+    const cart = JSON.parse(localStorage.getItem('vaulezaCart')) || {};
+    const subtotal = localStorage.getItem('vaulezaSubtotal') || '0.00';
+    
+    // Variáveis para armazenar seleções
+    let selectedBorder = {
+      name: "Sem borda",
+      price: 0
+    };
+    
+    let extraBorderCost = 0;
+    
+    // Elementos da página
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const cartTotalElement = document.getElementById('cart-total');
+    const complementsSection = document.getElementById('complements-section');
+    const deliverySection = document.getElementById('delivery-section');
+    const paymentSection = document.getElementById('payment-section');
+    const confirmationSection = document.getElementById('confirmation-section');
+    const pizzaComplements = document.getElementById('pizza-complements');
+    const addressFields = document.getElementById('address-fields');
+    const tableNumberField = document.getElementById('table-number-field');
+    const pixInfo = document.getElementById('pix-info');
+    const cardInfo = document.getElementById('card-info');
+    const cashInfo = document.getElementById('cash-info');
+    const changeValueContainer = document.getElementById('change-value-container');
+    const orderDetails = document.getElementById('order-details');
+    
+    // Botões
+    const btnNextDelivery = document.getElementById('btn-next-delivery');
+    const btnBackComplements = document.getElementById('btn-back-complements');
+    const btnNextPayment = document.getElementById('btn-next-payment');
+    const btnBackDelivery = document.getElementById('btn-back-delivery');
+    const btnConfirmOrder = document.getElementById('btn-confirm-order');
+    
+    // Métodos de entrega
+    const deliveryHome = document.getElementById('delivery-home');
+    const deliveryTable = document.getElementById('delivery-table');
+    const deliveryPickup = document.getElementById('delivery-pickup');
+    
+    // Métodos de pagamento
+    const paymentPix = document.getElementById('payment-pix');
+    const paymentCredit = document.getElementById('payment-credit');
+    const paymentDebit = document.getElementById('payment-debit');
+    const paymentCash = document.getElementById('payment-cash');
+    const needChange = document.getElementById('need-change');
+    
+    // Opções de borda
+    const borderOptions = document.querySelectorAll('input[name="pizza-border"]');
+    
+    // Função para calcular o total do carrinho
+    function calculateTotal() {
+      let total = 0;
+      for (const item in cart) {
+        total += cart[item].price * cart[item].qty;
+      }
+      // Adiciona o custo das bordas
+      total += extraBorderCost;
+      return total;
+    }
+    
+    // Função para renderizar os itens do carrinho
+    function renderCartItems() {
+      cartItemsContainer.innerHTML = '';
+      let hasPizza = false;
+      let pizzaCount = 0;
+      
+      for (const item in cart) {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'cart-item';
+        
+        // Verifica se é pizza para adicionar classe isPizza
+        const isPizza = item.toLowerCase().includes('pizza');
+        cart[item].isPizza = isPizza;
+        
+        itemDiv.innerHTML = `
+          <div class="item-name">${item} x${cart[item].qty}</div>
+          <div class="item-price">R$ ${(cart[item].price * cart[item].qty).toFixed(2)}</div>
+        `;
+        
+        cartItemsContainer.appendChild(itemDiv);
+        
+        // Verifica se tem pizza no pedido
+        if (isPizza) {
+          hasPizza = true;
+          pizzaCount += cart[item].qty;
+        }
+      }
+      
+      // Mostra opções de borda se tiver pizza
+      if (hasPizza) {
+        pizzaComplements.classList.remove('hidden');
+        
+        // Adiciona a borda selecionada ao resumo
+        if (selectedBorder.price > 0) {
+          const borderDiv = document.createElement('div');
+          borderDiv.className = 'cart-item';
+          borderDiv.innerHTML = `
+            <div class="item-name">${selectedBorder.name} x${pizzaCount}</div>
+            <div class="item-price">R$ ${(selectedBorder.price * pizzaCount).toFixed(2)}</div>
+          `;
+          cartItemsContainer.appendChild(borderDiv);
+        }
+      } else {
+        pizzaComplements.classList.add('hidden');
+      }
+      
+      // Atualiza o total
+      const total = calculateTotal();
+      cartTotalElement.textContent = `Total: R$ ${total.toFixed(2)}`;
+      localStorage.setItem('vaulezaSubtotal', total.toFixed(2));
+    }
+    
+    // Event Listeners
+    btnNextDelivery.addEventListener('click', () => {
+      complementsSection.classList.add('hidden');
+      deliverySection.classList.remove('hidden');
+    });
+    
+    btnBackComplements.addEventListener('click', () => {
+      deliverySection.classList.add('hidden');
+      complementsSection.classList.remove('hidden');
+    });
+    
+    btnNextPayment.addEventListener('click', () => {
+      // Validação básica antes de avançar
+      const name = document.getElementById('customer-name').value;
+      const phone = document.getElementById('customer-phone').value;
+      
+      if (!name || !phone) {
+        alert('Por favor, preencha seu nome e telefone');
+        return;
+      }
+      
+      if (deliveryHome.checked) {
+        const address = document.getElementById('customer-address').value;
+        const number = document.getElementById('customer-number').value;
+        const neighborhood = document.getElementById('customer-neighborhood').value;
+        
+        if (!address || !number || !neighborhood) {
+          alert('Por favor, preencha todos os campos obrigatórios do endereço');
+          return;
+        }
+      }
+      
+      if (deliveryTable.checked) {
+        const tableNumber = document.getElementById('table-number').value;
+        if (!tableNumber) {
+          alert('Por favor, informe o número da mesa');
+          return;
+        }
+      }
+      
+      deliverySection.classList.add('hidden');
+      paymentSection.classList.remove('hidden');
+    });
+    
+    btnBackDelivery.addEventListener('click', () => {
+      paymentSection.classList.add('hidden');
+      deliverySection.classList.remove('hidden');
+    });
+    
+    // Mostrar campos conforme método de entrega selecionado
+    deliveryHome.addEventListener('change', () => {
+      addressFields.classList.remove('hidden');
+      tableNumberField.classList.add('hidden');
+    });
+    
+    deliveryTable.addEventListener('change', () => {
+      addressFields.classList.add('hidden');
+      tableNumberField.classList.remove('hidden');
+    });
+    
+    deliveryPickup.addEventListener('change', () => {
+      addressFields.classList.add('hidden');
+      tableNumberField.classList.add('hidden');
+    });
+    
+    // Mostrar informações de pagamento conforme método selecionado
+    paymentPix.addEventListener('change', () => {
+      pixInfo.classList.remove('hidden');
+      cardInfo.classList.add('hidden');
+      cashInfo.classList.add('hidden');
+    });
+    
+    paymentCredit.addEventListener('change', () => {
+      pixInfo.classList.add('hidden');
+      cardInfo.classList.remove('hidden');
+      cashInfo.classList.add('hidden');
+    });
+    
+    paymentDebit.addEventListener('change', () => {
+      pixInfo.classList.add('hidden');
+      cardInfo.classList.remove('hidden');
+      cashInfo.classList.add('hidden');
+    });
+    
+    paymentCash.addEventListener('change', () => {
+      pixInfo.classList.add('hidden');
+      cardInfo.classList.add('hidden');
+      cashInfo.classList.remove('hidden');
+    });
+    
+    // Mostrar campo de valor para troco se necessário
+    needChange.addEventListener('change', () => {
+      if (needChange.value === 'yes') {
+        changeValueContainer.classList.remove('hidden');
+      } else {
+        changeValueContainer.classList.add('hidden');
+      }
+    });
+    
+    // Atualizar borda selecionada e recalcular total
+    borderOptions.forEach(option => {
+      option.addEventListener('change', () => {
+        if (option.checked) {
+          selectedBorder = {
+            name: option.value,
+            price: parseFloat(option.dataset.price)
+          };
+          
+          // Calcular custo extra das bordas
+          extraBorderCost = 0;
+          for (const item in cart) {
+            if (cart[item].isPizza) {
+              extraBorderCost += selectedBorder.price * cart[item].qty;
+            }
+          }
+          
+          renderCartItems();
+        }
+      });
+    });
+    
+    // Confirmar pedido
+    btnConfirmOrder.addEventListener('click', () => {
+      // Validação do pagamento em dinheiro
+      if (paymentCash.checked && needChange.value === 'yes') {
+        const changeValue = document.getElementById('change-value').value;
+        if (!changeValue || parseFloat(changeValue) <= 0) {
+          alert('Por favor, informe o valor para troco');
+          return;
+        }
+      }
+      
+      // Salvar observações no localStorage
+      const observations = document.getElementById('observations').value;
+      localStorage.setItem('vaulezaObservations', observations || 'Nenhuma observação adicional.');
+      
+      // Salvar método de entrega
+      const deliveryMethod = document.querySelector('input[name="delivery-method"]:checked').value;
+      localStorage.setItem('vaulezaDeliveryMethod', deliveryMethod);
+      
+      // Salvar método de pagamento
+      const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+      localStorage.setItem('vaulezaPaymentMethod', paymentMethod);
+      
+      // Salvar dados do cliente
+      const customerData = {
+        name: document.getElementById('customer-name').value,
+        phone: document.getElementById('customer-phone').value,
+        address: deliveryHome.checked ? {
+          street: document.getElementById('customer-address').value,
+          number: document.getElementById('customer-number').value,
+          complement: document.getElementById('customer-complement').value,
+          neighborhood: document.getElementById('customer-neighborhood').value,
+          reference: document.getElementById('customer-reference').value
+        } : null,
+        tableNumber: deliveryTable.checked ? document.getElementById('table-number').value : null
+      };
+      localStorage.setItem('vaulezaCustomerData', JSON.stringify(customerData));
+      
+      // Mostrar confirmação
+      paymentSection.classList.add('hidden');
+      confirmationSection.classList.remove('hidden');
+      
+      // Mostrar resumo do pedido
+      let details = '<h3>Resumo do Pedido</h3><ul>';
+      
+      // Itens do pedido
+      for (const item in cart) {
+        details += `<li><strong>${item} x${cart[item].qty}</strong> - R$ ${(cart[item].price * cart[item].qty).toFixed(2)}</li>`;
+      }
+      
+      // Borda das pizzas
+      if (selectedBorder.price > 0) {
+        let pizzaCount = 0;
+        for (const item in cart) {
+          if (cart[item].isPizza) {
+            pizzaCount += cart[item].qty;
+          }
+        }
+        details += `<li><strong>${selectedBorder.name} x${pizzaCount}</strong> - R$ ${(selectedBorder.price * pizzaCount).toFixed(2)}</li>`;
+      }
+      
+      details += `</ul><p class="total"><strong>Total: R$ ${calculateTotal().toFixed(2)}</strong></p>`;
+      
+      // Método de entrega
+      details += `<h3>Informações de Entrega</h3>`;
+      details += `<p><strong>Método:</strong> ${deliveryMethod}</p>`;
+      
+      if (deliveryMethod === 'Em domicílio') {
+        const address = customerData.address;
+        details += `<p><strong>Endereço:</strong> ${address.street}, ${address.number}`;
+        if (address.complement) details += ` - ${address.complement}`;
+        details += ` - ${address.neighborhood}</p>`;
+        if (address.reference) details += `<p><strong>Ponto de referência:</strong> ${address.reference}</p>`;
+      } else if (deliveryMethod === 'Em mesa') {
+        details += `<p><strong>Número da mesa:</strong> ${customerData.tableNumber}</p>`;
+      }
+      
+      // Método de pagamento
+      details += `<h3>Pagamento</h3>`;
+      details += `<p><strong>Método:</strong> ${paymentMethod}</p>`;
+      
+      if (paymentMethod === 'Dinheiro') {
+        if (needChange.value === 'yes') {
+          const changeValue = document.getElementById('change-value').value;
+          details += `<p><strong>Troco para:</strong> R$ ${parseFloat(changeValue).toFixed(2)}</p>`;
+        } else {
+          details += `<p><strong>Troco:</strong> Não precisa</p>`;
+        }
+      }
+      
+      // Observações
+      if (observations) {
+        details += `<h3>Observações</h3>`;
+        details += `<p>${observations}</p>`;
+      }
+      
+      // Informações do cliente
+      details += `<h3>Seus Dados</h3>`;
+      details += `<p><strong>Nome:</strong> ${customerData.name}</p>`;
+      details += `<p><strong>Telefone:</strong> ${customerData.phone}</p>`;
+      
+      orderDetails.innerHTML = details;
+      
+      // Limpar carrinho após finalizar
+      localStorage.removeItem('vaulezaCart');
+    });
+    
+    // Inicialização
+    renderCartItems();
+    
+    // Mostrar informações de pagamento padrão (PIX)
+    pixInfo.classList.remove('hidden');
+  </script>
+</body>
+</html>
