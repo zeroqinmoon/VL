@@ -46,6 +46,15 @@
       display: none;
       z-index: 10000;
       border-radius: 6px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform: translateY(20px);
+      opacity: 0;
+    }
+
+    #cartPopup.show {
+      transform: translateY(0);
+      opacity: 1;
+      display: block;
     }
 
     #cartPopup .cart-header {
@@ -122,6 +131,99 @@
       border-radius: 4px;
       font-weight: bold;
     }
+
+    .add-to-cart.added {
+      color: green;
+      transform: scale(1.1);
+      transition: all 0.3s ease;
+    }
+
+    /* Search Bar Styles */
+    .search-container {
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
+
+    #menuSearch {
+      height: 45px;
+      border-radius: 4px 0 0 4px;
+      border: 1px solid #ced4da;
+      padding: 10px;
+    }
+
+    #searchButton {
+      height: 45px;
+      border-radius: 0 4px 4px 0;
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      padding: 0 20px;
+      cursor: pointer;
+    }
+
+    #searchButton:hover {
+      background-color: #e68a00;
+    }
+
+    /* Layout Corrections */
+    .filters-content .row {
+      display: flex;
+      flex-wrap: wrap;
+      transition: all 0.3s ease;
+    }
+
+    .col-sm-6 {
+      transition: all 0.3s ease;
+      display: block !important;
+    }
+
+    .hidden-item {
+      display: none !important;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      padding: 0;
+      margin: 0;
+      opacity: 0;
+    }
+
+    .no-results-message {
+      width: 100%;
+      text-align: center;
+      padding: 40px 0;
+      font-size: 1.2rem;
+      color: #666;
+      order: 999;
+    }
+
+    .grid-item {
+      width: calc(33.333% - 30px);
+      margin: 15px;
+    }
+
+    @media (max-width: 992px) {
+      .grid-item {
+        width: calc(50% - 30px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .grid-item {
+        width: 100%;
+        margin: 10px 0;
+      }
+
+      .search-container {
+        padding: 0 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #cartPopup {
+        width: 280px;
+        right: 10px;
+      }
+    }
   </style>
 </head>
 
@@ -166,7 +268,7 @@
               <a href="" class="user_link">
                 <i class="fa fa-user" aria-hidden="true"></i>
               </a>
-              <a class="cart_link" href="#">
+              <a class="cart_link" href="#" id="headerCartBtn">
                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029"
                   style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
@@ -245,6 +347,18 @@
         <h2>Nosso Cardápio</h2>
       </div>
 
+      <!-- Search Bar -->
+      <div class="search-container mb-4">
+        <div class="input-group">
+          <input type="text" id="menuSearch" class="form-control" placeholder="Pesquisar itens no cardápio...">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="searchButton">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Menu Filters -->
       <ul class="filters_menu">
         <li class="active" data-filter="*">Tudo</li>
@@ -265,8 +379,8 @@
                 <h5>A Moda</h5>
                 <p>Mussarela, calabresa, presunto, ovo, ervilha, milho verde e azeitona</p>
                 <div class="options">
-                  <h6>R$65</h6>
-                  <a href="#" class="add-to-cart" data-name="Pizza A Moda" data-price="65.00"><i
+                  <h6>R$16.50</h6>
+                  <a href="#" class="add-to-cart" data-name="Pizza A Moda" data-price="16.50"><i
                       class="fa fa-shopping-cart"></i></a>
                 </div>
               </div>
@@ -404,7 +518,10 @@
       </div>
 
       <div class="btn-box">
-        <a href="#">Ver Mais</a>
+        <a href="https://api.whatsapp.com/send?phone=5511900000000&text=Ol%C3%A1.%20Seja%20muito%20bem%20vindo%20ao%20Vauleza%20Pizzaria%20e%20Lanchonete.%20Escolha%20o%20seu%20sabor%20e%20nos%20envie.%20O%20link%20do%20nosso%20card%C3%A1pio%20digital%20%C3%A9:%20https://vauleza.cardapio.top"
+          target="_blank">
+          Pedido pelo WhatsApp
+        </a>
       </div>
     </div>
   </section>
@@ -482,11 +599,14 @@
 
     // Elementos
     const openCartBtn = document.getElementById('openCartBtn');
+    const headerCartBtn = document.getElementById('headerCartBtn');
     const cartPopup = document.getElementById('cartPopup');
     const closeCartBtn = document.getElementById('closeCartBtn');
     const cartItemsContainer = document.getElementById('cartItems');
     const cartSubtotalElem = document.getElementById('cartSubtotal');
     const checkoutBtn = document.getElementById('checkoutBtn');
+    const menuSearch = document.getElementById('menuSearch');
+    const searchButton = document.getElementById('searchButton');
 
     // Atualiza o botão abrir carrinho com quantidade total
     function updateCartButton() {
@@ -496,11 +616,7 @@
 
     // Abre/fecha carrinho popup
     function toggleCart() {
-      if (cartPopup.style.display === 'block') {
-        cartPopup.style.display = 'none';
-      } else {
-        cartPopup.style.display = 'block';
-      }
+      cartPopup.classList.toggle('show');
     }
 
     // Atualiza o conteúdo do carrinho na interface
@@ -545,13 +661,27 @@
     }
 
     // Adiciona produto ao carrinho
-    function addToCart(name, price) {
+    function addToCart(event, name, price) {
+      if (!name || isNaN(price) || price <= 0) {
+        console.error('Dados do produto inválidos');
+        return;
+      }
+
       if (!cart[name]) {
-        cart[name] = { qty: 1, price };
+        cart[name] = { qty: 1, price: parseFloat(price) };
       } else {
         cart[name].qty += 1;
       }
+
       renderCart();
+
+      // Feedback visual
+      const btn = event.target.closest('.add-to-cart');
+      btn.classList.add('added');
+      setTimeout(() => btn.classList.remove('added'), 500);
+
+      // Abrir carrinho ao adicionar
+      cartPopup.classList.add('show');
     }
 
     // Altera quantidade do item no carrinho
@@ -569,15 +699,116 @@
       renderCart();
     }
 
+    // Função de pesquisa no menu
+    function searchMenu() {
+      const searchTerm = menuSearch.value.toLowerCase().trim();
+      const activeFilter = document.querySelector('.filters_menu li.active').getAttribute('data-filter');
+
+      // Remove mensagem anterior se existir
+      const previousMessage = document.querySelector('.no-results-message');
+      if (previousMessage) previousMessage.remove();
+
+      let hasResults = false;
+
+      // Percorre todos os itens do menu
+      document.querySelectorAll('.grid .col-sm-6').forEach(item => {
+        const itemTitle = item.querySelector('h5').textContent.toLowerCase();
+        const itemCategory = item.classList;
+        let shouldShow = false;
+
+        // Verifica se corresponde ao filtro ativo
+        const matchesFilter = activeFilter === '*' || itemCategory.contains(activeFilter.replace('.', ''));
+
+        // Verifica se corresponde à pesquisa (apenas pelo título)
+        const matchesSearch = searchTerm === '' || itemTitle.includes(searchTerm);
+
+        // Decide se deve mostrar o item
+        if (matchesFilter && matchesSearch) {
+          item.classList.remove('hidden-item');
+          hasResults = true;
+        } else {
+          item.classList.add('hidden-item');
+        }
+      });
+
+      // Se não houver resultados, mostra mensagem
+      if (!hasResults && searchTerm) {
+        const noResults = document.createElement('div');
+        noResults.className = 'no-results-message col-12';
+        noResults.innerHTML = `<p>Nenhum produto encontrado com "${searchTerm}"</p>`;
+        document.querySelector('.filters-content .row').appendChild(noResults);
+      }
+
+      // Reorganiza o layout
+      reorganizarLayout();
+    }
+
+    // Função para reorganizar o layout
+    function reorganizarLayout() {
+      const row = document.querySelector('.filters-content .row');
+      const visibleItems = Array.from(document.querySelectorAll('.grid .col-sm-6:not(.hidden-item)'));
+
+      // Reorganiza os itens visíveis mantendo a ordem original
+      visibleItems.forEach((item, index) => {
+        // Remove classes de ordenação anteriores
+        item.classList.remove('order-first', 'order-last', 'order-md-0', 'order-md-1');
+
+        // Adiciona classes de ordenação baseadas na posição
+        if (index % 2 === 0) {
+          item.classList.add('order-first');
+        } else {
+          item.classList.add('order-last');
+        }
+      });
+
+      // Força redesenho do layout
+      if (window.Isotope) {
+        const iso = new Isotope('.grid', {
+          itemSelector: '.col-sm-6',
+          layoutMode: 'fitRows'
+        });
+        iso.layout();
+      }
+    }
+
+    // Aplica filtro de categoria
+    function applyFilter(filter) {
+      // Limpa a pesquisa
+      menuSearch.value = '';
+
+      // Remove mensagem de nenhum resultado se existir
+      const previousMessage = document.querySelector('.no-results-message');
+      if (previousMessage) previousMessage.remove();
+
+      // Percorre todos os itens do menu
+      document.querySelectorAll('.grid .col-sm-6').forEach(item => {
+        const itemCategory = item.classList;
+
+        // Verifica se corresponde ao filtro selecionado
+        if (filter === '*' || itemCategory.contains(filter.replace('.', ''))) {
+          item.classList.remove('hidden-item');
+        } else {
+          item.classList.add('hidden-item');
+        }
+      });
+
+      // Reorganiza o layout
+      reorganizarLayout();
+    }
+
     // Eventos
 
     // Botão abrir carrinho
     openCartBtn.addEventListener('click', toggleCart);
 
-    // Botão fechar carrinho
-    closeCartBtn.addEventListener('click', () => {
-      cartPopup.style.display = 'none';
+    // Ícone do carrinho no header
+    headerCartBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleCart();
     });
+
+    // Botão fechar carrinho
+    closeCartBtn.addEventListener('click', toggleCart);
 
     // Eventos para botões + e - dentro do carrinho (delegação)
     cartItemsContainer.addEventListener('click', e => {
@@ -593,26 +824,71 @@
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         const name = btn.dataset.name;
-        const price = parseFloat(btn.dataset.price);
-        addToCart(name, price);
-        // Abrir carrinho ao adicionar
-        cartPopup.style.display = 'block';
+        const price = btn.dataset.price;
+        addToCart(e, name, price);
       });
     });
 
     // Botão finalizar compra
-    // Substitua o evento do botão checkout no script existente por:
     checkoutBtn.addEventListener('click', () => {
-      // Salvar os dados do carrinho no localStorage
-      localStorage.setItem('vaulezaCart', JSON.stringify(cart));
-      localStorage.setItem('vaulezaSubtotal', cartSubtotalElem.textContent);
+      try {
+        if (typeof (Storage) !== "undefined") {
+          localStorage.setItem('vaulezaCart', JSON.stringify(cart));
+          localStorage.setItem('vaulezaSubtotal', cartSubtotalElem.textContent);
+          window.location.href = 'final.html';
+        } else {
+          alert('Seu navegador não suporta armazenamento local. Não é possível finalizar a compra.');
+        }
+      } catch (e) {
+        console.error('Erro ao salvar carrinho:', e);
+        alert('Ocorreu um erro ao processar seu pedido. Tente novamente.');
+      }
+    });
 
-      // Redirecionar para a página final
-      window.location.href = 'final.html';
+    // Fechar carrinho ao clicar fora
+    document.addEventListener('click', (e) => {
+      if (!cartPopup.contains(e.target) &&
+        e.target !== openCartBtn &&
+        e.target !== headerCartBtn &&
+        !headerCartBtn.contains(e.target)) {
+        cartPopup.classList.remove('show');
+      }
+    });
+
+    // Eventos da barra de pesquisa
+    searchButton.addEventListener('click', searchMenu);
+    menuSearch.addEventListener('keyup', function (e) {
+      if (e.key === 'Enter') {
+        searchMenu();
+      }
+    });
+
+    // Eventos dos filtros de categoria
+    document.querySelectorAll('.filters_menu li').forEach(item => {
+      item.addEventListener('click', function () {
+        // Remove a classe active de todos os itens
+        document.querySelectorAll('.filters_menu li').forEach(li => {
+          li.classList.remove('active');
+        });
+
+        // Adiciona a classe active apenas no item clicado
+        this.classList.add('active');
+
+        // Aplica o filtro
+        const filter = this.getAttribute('data-filter');
+        applyFilter(filter);
+      });
     });
 
     // Inicializa
     renderCart();
+    // Inicializa Isotope para o layout
+    if (window.Isotope) {
+      new Isotope('.grid', {
+        itemSelector: '.col-sm-6',
+        layoutMode: 'fitRows'
+      });
+    }
   </script>
 </body>
 
